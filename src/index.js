@@ -1,6 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter } from "react-router-dom"
+import { ThemeProvider } from "@material-ui/styles"
+import theme from "styles/theme/theme"
 import "index.css"
 import App from "App"
 // eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
@@ -9,7 +11,9 @@ import reportWebVitals from "reportWebVitals"
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
