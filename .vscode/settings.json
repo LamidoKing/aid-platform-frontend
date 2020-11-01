@@ -4,5 +4,6 @@
   "eslint.alwaysShowStatus": true,
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "prettier.packageManager": "yarn"
 }
