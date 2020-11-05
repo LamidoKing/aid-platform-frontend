@@ -5,5 +5,6 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.packageManager": "yarn"
+  "prettier.semi": false,
+  "editor.renameOnType": true
 }
