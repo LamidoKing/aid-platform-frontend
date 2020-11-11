@@ -1,4 +1,4 @@
 import useForm from "./useForm"
+import useCounter from "./useCounter"
 
-// eslint-disable-next-line import/prefer-default-export
-export { useForm }
+export { useForm, useCounter }
