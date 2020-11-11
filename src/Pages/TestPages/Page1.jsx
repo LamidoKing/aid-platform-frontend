@@ -1,11 +1,66 @@
 import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import Card from "@material-ui/core/Card"
+import CardActions from "@material-ui/core/CardActions"
+import CardContent from "@material-ui/core/CardContent"
+import Button from "@material-ui/core/Button"
+import Typography from "@material-ui/core/Typography"
+import GridContainer from "Components/Grid/GridContainer"
+import GridItem from "Components/Grid/GridItem"
+import Container from "@material-ui/core/Container"
+
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    zIndex: 0,
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+})
 
 const Page1 = () => {
+  const classes = useStyles()
+  const bull = <span className={classes.bullet}>•</span>
   return (
-    <div>
-      Page1
-      <div>This pages Request to Login Seeing this means you are Login</div>
-    </div>
+    <Container>
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={8} md={4}>
+          <Card className={classes.root}>
+            <CardContent>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
+                Word of the Day
+              </Typography>
+              <Typography variant="h5" component="h2">
+                be{bull}nev{bull}o{bull}lent
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                adjective
+              </Typography>
+              <Typography variant="body2" component="p">
+                well meaning and kindly.
+                <br />a benevolent smile
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </Container>
   )
 }
 
