@@ -5,14 +5,17 @@ import { ThemeProvider } from "@material-ui/styles"
 import theme from "styles/theme/theme"
 import "index.css"
 import App from "App"
+import { StoresProvider, stores } from "mobxStore"
 // eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
 import reportWebVitals from "reportWebVitals"
 
 ReactDOM.render(
   <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <StoresProvider value={stores}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </StoresProvider>
   </BrowserRouter>,
   document.getElementById("root")
 )

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 const listStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    maxWidth: 360,
   },
   listText: {
     color: theme.palette.primary.main,

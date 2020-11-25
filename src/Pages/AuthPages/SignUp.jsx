@@ -1,11 +1,12 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { AuthToken } from "utils"
-import { useForm } from "hooks"
+import { observer } from "mobx-react-lite"
+import { useForm, useStores } from "hooks"
 import AuthForm from "./AuthForm"
 
-const SignUp = () => {
+const SignUp = observer(() => {
   const history = useHistory()
+  const { userStore } = useStores()
   const initialState = {
     first_name: undefined,
     last_name: undefined,
@@ -36,7 +37,8 @@ const SignUp = () => {
         return formdata.append(`user[${key}]`, values[key])
       })
 
-      AuthToken.setToken("sgfhgsdhgfygfygshgf")
+      values.id = userStore.users.length + 1
+      userStore.signUp(values)
       history.push("/pages")
     }
   }
@@ -61,6 +63,6 @@ const SignUp = () => {
       />
     </>
   )
-}
+})
 
 export default SignUp

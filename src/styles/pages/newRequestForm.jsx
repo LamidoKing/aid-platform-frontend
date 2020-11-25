@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles"
 
-const authFormStyles = makeStyles(() => ({
+const newRequestForm = makeStyles((theme) => ({
   paper: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     margin: "30px 0px",
@@ -17,25 +17,20 @@ const authFormStyles = makeStyles(() => ({
   },
   inputLogin: {
     textAlign: "center",
-    paddingTop: "10px",
-    paddingBottom: "10px",
-  },
-  inputsignUP: {
-    textAlign: "center",
-    paddingBottom: "3px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
   },
   buttonCenter: {
-    textAlign: "center !important",
-    padding: "20px 0px",
+    textAlign: "center",
+    paddingTop: "10px",
   },
   button: {
-    color: "black",
+    color: theme.palette.secondary.main,
   },
-  fot: {
-    textAlign: "center !important",
-    color: "white",
-    paddingBottom: "10px",
+  cancelButton: {
+    color: theme.palette.primary.main,
+    marginRight: "15px",
   },
 }))
 
-export default authFormStyles
+export default newRequestForm
