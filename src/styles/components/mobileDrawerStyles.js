@@ -2,11 +2,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 const drawerWidth = 240
 
-const drawerStyles = makeStyles((theme) => ({
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
+const mobileDrawerStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
     backgroundColor: theme.palette.secondary.main,
@@ -27,4 +23,4 @@ const drawerStyles = makeStyles((theme) => ({
   },
 }))
 
-export default drawerStyles
+export default mobileDrawerStyles

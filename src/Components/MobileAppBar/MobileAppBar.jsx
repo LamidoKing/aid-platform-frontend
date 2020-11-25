@@ -5,15 +5,16 @@ import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from "@material-ui/icons/Menu"
+import mobileAppBarStyles from "styles/components/mobileAppBarStyles"
 
 const propTypes = {
-  classes: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
 }
 
 const MobileAppBar = (props) => {
-  const { classes, title, toggleDrawer } = props
+  const classes = mobileAppBarStyles()
+  const { title, toggleDrawer } = props
 
   return (
     <>
@@ -24,7 +25,7 @@ const MobileAppBar = (props) => {
             aria-label="open drawer"
             onClick={toggleDrawer("mobile", true)}
             edge="start"
-            className={classes}
+            className={classes.menuButtomMobile}
           >
             <MenuIcon />
           </IconButton>

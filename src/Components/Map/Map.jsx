@@ -1,11 +1,23 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api"
-import Loading from "Components/Loading/Loading"
+import { GoogleMap, LoadScript } from "@react-google-maps/api"
+import { observer } from "mobx-react-lite"
+import { useStores } from "hooks"
 import { Variables } from "utils"
+import Loading from "Components/Loading/Loading"
+import Markers from "./Markers"
+import MakerDetails from "./MakerDetails"
+import DragableMaker from "./DragableMaker"
 
 const propTypes = {
   children: PropTypes.element.isRequired,
+  handleMapClick: PropTypes.func,
+  handleMakerClick: PropTypes.func,
+}
+
+const defaultProps = {
+  handleMapClick: () => {},
+  handleMakerClick: () => {},
 }
 
 const containerStyle = {
@@ -14,10 +26,12 @@ const containerStyle = {
   zIndex: 111,
 }
 
-const Map = (props) => {
-  const { children } = props
+const Map = observer((props) => {
+  const { children, handleMapClick, handleMakerClick } = props
   const [userLocation, setUserLocation] = useState({})
   const [open, setopen] = useState(true)
+  const { mapstore } = useStores()
+
   const handleOpen = () => {
     setopen(false)
   }
@@ -28,6 +42,12 @@ const Map = (props) => {
       lng: position.coords.longitude,
     }
     setUserLocation(currentPosition)
+  }
+  const placeDragableMaker = () => {
+    if (mapstore.dragable === true) {
+      return true
+    }
+    return false
   }
 
   useEffect(() => {
@@ -46,15 +66,20 @@ const Map = (props) => {
           center={userLocation}
           zoom={10}
           options={Variables.mapOptions}
+          onRightClick={handleMapClick}
         >
-          <Marker position={userLocation} />
+          <Markers handleMakerClick={handleMakerClick} />
+          <MakerDetails />
+          {placeDragableMaker() && <DragableMaker />}
+
           <>{children}</>
         </GoogleMap>
       </LoadScript>
     </>
   )
-}
+})
 
 Map.propTypes = propTypes
+Map.defaultProps = defaultProps
 
-export default memo(Map)
+export default Map

@@ -26,7 +26,7 @@ const defaultProps = {
 const DrawerList = (props) => {
   const classes = listStyles()
   const { title, titleIcon: TitleIcon, itemList, handleItemClick } = props
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const handleClick = () => {
     setOpen(!open)
@@ -51,28 +51,28 @@ const DrawerList = (props) => {
             <List component="div" disablePadding key={item.name}>
               <ListItem
                 button
-                onClick={() => handleItemClick(item.linkTo)}
+                onClick={() => handleItemClick(item, title)}
                 className={classes.nested}
               >
                 <ListItemText
                   primary={item.name}
                   className={classes.listText}
                 />
-                <ListItemIcon className={classes.listText}>
-                  <Tooltip
-                    title={item.status === "offline" ? "offline" : "online"}
-                    aria-label={
-                      item.status === "offline" ? "offline" : "online"
-                    }
-                    arrow
-                  >
-                    <item.icon
-                      className={clsx(
-                        item.status === "offline" && classes.offlineColor
-                      )}
-                    />
-                  </Tooltip>
-                </ListItemIcon>
+                {item.icon && (
+                  <ListItemIcon className={classes.listText}>
+                    <Tooltip
+                      title={item.status ? item.status : item.name}
+                      aria-label={item.status ? item.status : item.name}
+                      arrow
+                    >
+                      <item.icon
+                        className={clsx(
+                          item.status === "offline" && classes.offlineColor
+                        )}
+                      />
+                    </Tooltip>
+                  </ListItemIcon>
+                )}
               </ListItem>
             </List>
           )

@@ -1,6 +1,6 @@
 import Auth from "Layouts/Auth"
-import Pages from "Layouts/Pages"
-import Home from "Layouts/Home"
+import Pages from "Layouts/Pages/Pages"
+import Home from "Layouts/Home/Home"
 
 const indexRoutes = [
   { path: "/auth", component: Auth },

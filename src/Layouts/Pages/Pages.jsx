@@ -1,7 +1,7 @@
 import React from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import pagesRoutes from "routes/pages"
-import Drawer from "Components/Drawer/Drawer"
+import Dashbord from "./Dashbord"
 
 const routes = (
   <Switch>
@@ -18,7 +18,7 @@ const routes = (
 const Pages = () => {
   return (
     <>
-      <Drawer>{routes}</Drawer>
+      <Dashbord>{routes}</Dashbord>
     </>
   )
 }

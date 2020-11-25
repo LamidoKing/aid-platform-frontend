@@ -7,8 +7,12 @@ const defaultProps = {
   id: "",
   value: "",
   type: "string",
+  rows: 1,
   error: false,
+  multiline: false,
   required: false,
+  select: false,
+  children: <></>,
   adornment: <></>,
   handleChange: () => {},
   handleClick: () => {},
@@ -19,9 +23,13 @@ const propTypes = {
   id: PropTypes.string,
   value: PropTypes.oneOfType([string, number]),
   error: PropTypes.bool,
+  multiline: PropTypes.bool,
+  select: PropTypes.bool,
+  rows: PropTypes.number,
   type: PropTypes.oneOfType([string, number]),
   required: PropTypes.bool,
   adornment: PropTypes.element,
+  children: PropTypes.node,
   handleChange: PropTypes.func,
   handleClick: PropTypes.func,
 }
@@ -51,6 +59,10 @@ const Input = (props) => {
     type,
     required,
     adornment,
+    rows,
+    select,
+    multiline,
+    children,
     handleChange,
     handleClick,
   } = props
@@ -63,11 +75,14 @@ const Input = (props) => {
         error={error}
         required={required}
         type={type}
+        rows={rows}
+        select={select}
         onChange={handleChange}
         onClick={handleClick}
         variant="outlined"
         margin="normal"
         fullWidth
+        multiline={multiline}
         size="small"
         InputProps={{
           style: { color: "white" },
@@ -76,7 +91,9 @@ const Input = (props) => {
         InputLabelProps={{
           style: { color: "white" },
         }}
-      />
+      >
+        {children}
+      </CssTextField>
     </>
   )
 }

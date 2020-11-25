@@ -1,6 +1,5 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { makeStyles } from "@material-ui/core/styles"
 import Timeline from "@material-ui/lab/Timeline"
 import TimelineItem from "@material-ui/lab/TimelineItem"
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator"
@@ -8,23 +7,9 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector"
 import TimelineContent from "@material-ui/lab/TimelineContent"
 import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent"
 import TimelineDot from "@material-ui/lab/TimelineDot"
-import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: "6px 16px",
-    backgroundColor: theme.palette.primary.main,
-  },
-  title: {
-    padding: "20px 10px 0px",
-    textAlign: "center",
-    color: "white",
-  },
-  dot: {
-    color: "white",
-  },
-}))
+import Paper from "@material-ui/core/Paper"
+import timelineStyles from "styles/components/timelineStyles"
 
 const propTypes = {
   array: PropTypes.oneOfType([PropTypes.array]).isRequired,
@@ -32,7 +17,7 @@ const propTypes = {
 }
 
 const CustomizedTimeline = (props) => {
-  const classes = useStyles()
+  const classes = timelineStyles()
   const { array, title } = props
 
   return (
