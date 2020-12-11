@@ -17,8 +17,8 @@ class RequestStore {
   constructor(userStore) {
     makeAutoObservable(this)
     this.requests = Variables.requests
+    this.currentUser = userStore.currentUser
     autorun(() => {
-      this.currentUser = userStore.currentUser
       this.myRequests = this.filterMyRequest
       this.filtedRequests = this.filterMyRequest
       this.volunteer = this.volunteered

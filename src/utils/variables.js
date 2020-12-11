@@ -16,67 +16,28 @@ const users = [
     first_name: "lamido",
     last_name: "tijjani",
     email: "lamido@gmail.com",
+    status: "offline",
   },
   {
     id: 2,
     first_name: "Alex",
     last_name: "Nicholos",
     email: "alex@gmail.com",
-  },
-]
-
-const fulfullHelp = [
-  {
-    step: "step one",
-    title: "View",
-    body: "View the help by clicking the maker ",
-    icon: VisibilityIcon,
-  },
-  {
-    step: "step two",
-    title: "Chat",
-    body: "chat with Requester how to fulfull the request",
-    icon: ChatBubbleOutlineIcon,
-  },
-  {
-    step: "step three",
-    title: "Fulfilled",
-    body: "When request fulfulled mark as Done",
-    icon: DoneIcon,
-  },
-]
-const helpRequest = [
-  {
-    step: "step one",
-    title: "New",
-    body: "click new request and follow the instruction",
-    icon: MouseIcon,
-  },
-  {
-    step: "step two",
-    title: "Done",
-    body: "its done, your request will appear on the map and dashbord",
-    icon: DoneIcon,
-  },
-]
-
-const requestList = [
-  { name: "Fulfilled", icon: FulfilledIcon },
-  { name: "Unfulfill", icon: UnfulfiledIcon },
-]
-
-const chatList = [
-  {
-    name: "Alex Joe",
-    linkTo: "/pages/page1",
-    icon: OfflineIcon,
     status: "offline",
   },
   {
-    name: "Dan Carlos",
-    linkTo: "/pages/page2",
-    icon: OnlineIcon,
-    status: "online",
+    id: 3,
+    first_name: "Dan",
+    last_name: "Carlos",
+    email: "dan@gmail.com",
+    status: "offline",
+  },
+  {
+    id: 4,
+    first_name: "Alex",
+    last_name: "Joe",
+    email: "alexjoe@gmail.com",
+    status: "offline",
   },
 ]
 
@@ -269,6 +230,181 @@ const requests = [
     longitude: 7.575343045667657,
     status: "Unfulfill",
     volunters: [],
+  },
+]
+
+const find = (objects, id) => {
+  return objects.find((object) => id === object.id)
+}
+
+const messages = [
+  {
+    id: 1,
+    sender_id: find(users, 2),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "ghghghhghgdffgfgh",
+  },
+  {
+    id: 2,
+    sender_id: find(users, 3),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "hello",
+  },
+  {
+    id: 3,
+    sender_id: find(users, 4),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "hello",
+  },
+  {
+    id: 4,
+    sender_id: find(users, 1),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 11),
+    message: "hello",
+  },
+  {
+    id: 5,
+    sender_id: find(users, 3),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 11),
+    message: "hello",
+  },
+  {
+    id: 6,
+    sender_id: find(users, 4),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 12),
+    message: "hello",
+  },
+  {
+    id: 7,
+    sender_id: find(users, 3),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 2),
+    message: "hello",
+  },
+  {
+    id: 8,
+    sender_id: find(users, 1),
+    receiver_id: find(users, 3),
+    request_id: find(requests, 1),
+    message: "hellow",
+  },
+  {
+    id: 9,
+    sender_id: find(users, 4),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 4),
+    message: "ghghghhghgdffgfgh",
+  },
+  {
+    id: 10,
+    sender_id: find(users, 2),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "hello",
+  },
+  {
+    id: 11,
+    sender_id: find(users, 1),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 1),
+    message: "hi",
+  },
+  {
+    id: 12,
+    sender_id: find(users, 2),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message:
+      "woow this s very very nice, its updated, clean and better than most tutorial, Thaks you very muchwoow this s very very nice, its updated, clean and better than most tutorial, Thaks you very much",
+  },
+  {
+    id: 13,
+    sender_id: find(users, 2),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "hello",
+  },
+  {
+    id: 14,
+    sender_id: find(users, 1),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 1),
+    message: "hi",
+  },
+  {
+    id: 15,
+    sender_id: find(users, 2),
+    receiver_id: find(users, 1),
+    request_id: find(requests, 1),
+    message: "hello",
+  },
+  {
+    id: 16,
+    sender_id: find(users, 1),
+    receiver_id: find(users, 2),
+    request_id: find(requests, 1),
+    message: "hi",
+  },
+]
+
+const fulfullHelp = [
+  {
+    step: "step one",
+    title: "View",
+    body: "View the help by clicking the maker ",
+    icon: VisibilityIcon,
+  },
+  {
+    step: "step two",
+    title: "Chat",
+    body: "chat with Requester how to fulfull the request",
+    icon: ChatBubbleOutlineIcon,
+  },
+  {
+    step: "step three",
+    title: "Fulfilled",
+    body: "When request fulfulled mark as Done",
+    icon: DoneIcon,
+  },
+]
+const helpRequest = [
+  {
+    step: "step one",
+    title: "New",
+    body: "click new request and follow the instruction",
+    icon: MouseIcon,
+  },
+  {
+    step: "step two",
+    title: "Done",
+    body: "its done, your request will appear on the map and dashbord",
+    icon: DoneIcon,
+  },
+]
+
+const requestList = [
+  { name: "Fulfilled", icon: FulfilledIcon },
+  { name: "Unfulfill", icon: UnfulfiledIcon },
+]
+
+const chatList = [
+  {
+    name: "Alex Joe",
+    linkTo: "/pages/page1",
+    icon: OfflineIcon,
+    status: "offline",
+  },
+  {
+    name: "Dan Carlos",
+    linkTo: "/pages/page2",
+    icon: OnlineIcon,
+    status: "online",
   },
 ]
 
@@ -498,4 +634,5 @@ export {
   requestList,
   chatList,
   requests,
+  messages,
 }

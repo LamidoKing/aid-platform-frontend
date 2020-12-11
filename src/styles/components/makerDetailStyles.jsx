@@ -13,6 +13,11 @@ const makerDetailStyles = makeStyles((theme) => ({
     color: "white",
     fontSize: theme.typography.pxToRem(15),
   },
+  content: {
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  },
 }))
 
 export default makerDetailStyles

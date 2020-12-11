@@ -1,5 +1,11 @@
 import { createContext } from "react"
-import { AppStore, MapStore, RequestStore, UserStore } from "./StoreSection"
+import {
+  AppStore,
+  MapStore,
+  RequestStore,
+  UserStore,
+  ChatStore,
+} from "./StoreSection"
 
 const appstore = new AppStore()
 
@@ -9,11 +15,14 @@ const userStore = new UserStore()
 
 const requeststore = new RequestStore(userStore)
 
+const chatStore = new ChatStore(userStore)
+
 const stores = Object.freeze({
   appstore,
   mapstore,
   userStore,
   requeststore,
+  chatStore,
 })
 
 const storesContext = createContext(stores)

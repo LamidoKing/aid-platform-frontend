@@ -7,6 +7,10 @@ class AppStore {
 
   editRequestDialog = false
 
+  chatDialog = true
+
+  chatWithMoreRequest = false
+
   constructor() {
     makeAutoObservable(this)
   }
@@ -37,6 +41,14 @@ class AppStore {
 
   hideEditDialog() {
     this.editRequestDialog = false
+  }
+
+  haandleChatDialog(value) {
+    this.chatDialog = value
+  }
+
+  handlechatWithMoreRequest(value) {
+    this.chatWithMoreRequest = value
   }
 }
 
