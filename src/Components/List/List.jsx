@@ -10,16 +10,19 @@ import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import Tooltip from "@material-ui/core/Tooltip"
 import listStyles from "styles/components/listStyles"
+import OfflineIcon from "@material-ui/icons/GpsNotFixed"
+import OnlineIcon from "@material-ui/icons/GpsFixed"
 
 const propTypes = {
   title: PropTypes.string,
   titleIcon: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  itemList: PropTypes.oneOfType([PropTypes.array]).isRequired,
+  itemList: PropTypes.oneOfType([PropTypes.array]),
   handleItemClick: PropTypes.func,
 }
 
 const defaultProps = {
   title: "title",
+  itemList: [],
   handleItemClick: () => {},
 }
 
@@ -48,14 +51,22 @@ const DrawerList = (props) => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         {itemList.map((item) => {
           return (
-            <List component="div" disablePadding key={item.name}>
+            <List
+              component="div"
+              disablePadding
+              key={title === "Chats" ? item.id : item.name}
+            >
               <ListItem
                 button
                 onClick={() => handleItemClick(item, title)}
                 className={classes.nested}
               >
                 <ListItemText
-                  primary={item.name}
+                  primary={
+                    title === "Chats"
+                      ? `${item.first_name} ${item.last_name}`
+                      : item.name
+                  }
                   className={classes.listText}
                 />
                 {item.icon && (
@@ -70,6 +81,29 @@ const DrawerList = (props) => {
                           item.status === "offline" && classes.offlineColor
                         )}
                       />
+                    </Tooltip>
+                  </ListItemIcon>
+                )}
+                {title === "Chats" && (
+                  <ListItemIcon className={classes.listText}>
+                    <Tooltip
+                      title={item.status ? item.status : item.name}
+                      aria-label={item.status ? item.status : item.name}
+                      arrow
+                    >
+                      {item.status === "offline" ? (
+                        <OfflineIcon
+                          className={clsx(
+                            item.status === "offline" && classes.offlineColor
+                          )}
+                        />
+                      ) : (
+                        <OnlineIcon
+                          className={clsx(
+                            item.status === "offline" && classes.offlineColor
+                          )}
+                        />
+                      )}
                     </Tooltip>
                   </ListItemIcon>
                 )}

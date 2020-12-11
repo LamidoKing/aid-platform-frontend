@@ -1,5 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
+import { useHistory } from "react-router-dom"
 import Button from "@material-ui/core/Button"
 // Hooks
 import { useStores } from "hooks"
@@ -18,16 +19,28 @@ import makerDetailStyles from "styles/components/makerDetailStyles"
 
 const MakerDetails = observer(() => {
   const classes = makerDetailStyles()
-  const { mapstore, requeststore, userStore } = useStores()
+  const history = useHistory()
+  const { appstore, mapstore, requeststore, userStore, chatStore } = useStores()
   const { request } = requeststore
 
   const handleClose = () => {
     mapstore.closeDetails()
   }
 
-  const handleVolunteer = () => {
+  const handleVolunteer = (user, req) => {
     requeststore.volunteerToRequest(request)
+    chatStore.volunteerToRequest(req)
+
+    appstore.handlechatWithMoreRequest(false)
     handleClose()
+    appstore.showMapPages()
+    history.push("/pages/chat")
+  }
+
+  const handleClickVolunter = () => {
+    handleClose()
+    appstore.showMapPages()
+    history.push("/pages/chat")
   }
 
   return (
@@ -40,7 +53,7 @@ const MakerDetails = observer(() => {
             <DialogTitle id="alert-dialog-title" className={classes.title}>
               {request.title}
             </DialogTitle>
-            <DialogContent dividers>
+            <DialogContent dividers className={classes.content}>
               <DialogContentText
                 id="alert-dialog-description"
                 className={classes.description}
@@ -68,6 +81,7 @@ const MakerDetails = observer(() => {
                     title="Volunters"
                     titleIcon={PeopleAltIcon}
                     itemList={request.volunters}
+                    handleItemClick={handleClickVolunter}
                   />
                 </div>
               )}
@@ -77,7 +91,13 @@ const MakerDetails = observer(() => {
                 Back
               </Button>
               {userStore.currentUser.id !== request.user_id && (
-                <Button onClick={handleVolunteer} color="primary" autoFocus>
+                <Button
+                  onClick={() =>
+                    handleVolunteer(userStore.currentUser, request)
+                  }
+                  color="primary"
+                  autoFocus
+                >
                   Volunteer
                 </Button>
               )}

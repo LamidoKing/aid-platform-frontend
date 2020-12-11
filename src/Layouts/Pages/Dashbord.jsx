@@ -28,7 +28,7 @@ const propTypes = {
 }
 
 const DrawerMain = observer((props) => {
-  const { appstore, mapstore, requeststore, userStore } = useStores()
+  const { appstore, mapstore, requeststore, userStore, chatStore } = useStores()
   const history = useHistory()
   const classes = dashbordStyles()
   const { children } = props
@@ -66,7 +66,9 @@ const DrawerMain = observer((props) => {
     }
 
     if (title === "Chats") {
-      // Todo
+      setOpen({ ...open, drawer: false })
+      chatStore.setSenderRequest(item)
+      history.push("/pages/chat")
       return ""
     }
 

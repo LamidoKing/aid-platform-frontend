@@ -1,21 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx"
-import { AuthToken } from "utils"
+import { AuthToken, Variables } from "utils"
 
 class UserStore {
-  users = [
-    {
-      id: 1,
-      first_name: "lamido",
-      last_name: "tijjani",
-      email: "lamido@gmail.com",
-    },
-    {
-      id: 2,
-      first_name: "Alex",
-      last_name: "Nicholos",
-      email: "alex@gmail.com",
-    },
-  ]
+  users = Variables.users
 
   error = {}
 

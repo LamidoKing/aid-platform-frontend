@@ -33,6 +33,7 @@ const LogIn = observer(() => {
   useEffect(() => {
     if (userStore.currentUser.id) {
       history.push("/pages")
+      history.go(0)
     }
     if (userStore.error.message) {
       setOpen(true)
