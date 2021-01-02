@@ -32,6 +32,16 @@ const DrawerList = observer((props) => {
     <>
       <Button
         component={Link}
+        to="/pages/stats"
+        variant="contained"
+        color="primary"
+        className={classes.newrequestButton}
+        onClick={toggleDrawer(type, false)}
+      >
+        Stats
+      </Button>
+      <Button
+        component={Link}
         to="/pages/newrequest"
         variant="contained"
         color="primary"
