@@ -6,5 +6,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.semi": false,
-  "editor.renameOnType": true
+  "editor.renameOnType": true,
+  "git.autorefresh": false,
+  "files.autoSave": "afterDelay"
 }

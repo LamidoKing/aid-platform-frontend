@@ -1,11 +1,15 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { observer } from "mobx-react-lite"
 import { useForm, useStores } from "hooks"
+import Notification from "Components/Notification/Notifications"
+import Loading from "Components/Loading/Loading"
 import AuthForm from "./AuthForm"
 
 const SignUp = observer(() => {
   const history = useHistory()
+  const [open, setOpen] = useState(false)
+  const [isloding, seIsloding] = useState(false)
   const { userStore } = useStores()
   const initialState = {
     first_name: undefined,
@@ -17,6 +21,11 @@ const SignUp = observer(() => {
   const { values, file, fileName, isnoEmpathyValue, handleChange } = useForm({
     initialState,
   })
+
+  const handleCloseNotification = () => {
+    setOpen(false)
+    userStore.clearError()
+  }
 
   const isOkToSummit = () => {
     if (isnoEmpathyValue && file !== undefined) {
@@ -37,7 +46,7 @@ const SignUp = observer(() => {
         return formdata.append(`user[${key}]`, values[key])
       })
 
-      values.id = userStore.users.length + 1
+      values.status = "online"
       userStore.signUp(values)
       history.push("/pages")
     }
@@ -50,8 +59,29 @@ const SignUp = observer(() => {
     }
   }
 
+  useEffect(() => {
+    if (userStore.status === "fetching") {
+      seIsloding(true)
+    }
+    if (userStore.status === "success") {
+      seIsloding(false)
+      history.push("/pages")
+      history.go(0)
+    }
+    if (userStore.status === "error") {
+      seIsloding(false)
+      setOpen(true)
+    }
+  }, [history, userStore.status])
+
   return (
     <>
+      <Loading open={isloding} />
+      <Notification
+        open={open}
+        message={userStore.error.message}
+        handleCloseNotification={handleCloseNotification}
+      />
       <AuthForm
         signUp
         values={values}
