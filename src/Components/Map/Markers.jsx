@@ -22,7 +22,7 @@ const Markers = observer((props) => {
   const { requests } = requeststore
 
   const makerIcon = (request) => {
-    if (userStore.currentUser.id === request.user_id) {
+    if (userStore.currentUser.id === request.user.id) {
       return request.type_of_request === "Material Need" ? marker3 : marker4
     }
     return request.type_of_request === "Material Need" ? marker1 : marker2
@@ -31,7 +31,7 @@ const Markers = observer((props) => {
   const hasMaxVolunters = (request) => {
     if (
       request.volunters.length > 4 &&
-      userStore.currentUser.id !== request.user_id
+      userStore.currentUser.id !== request.user.id
     ) {
       return true
     }
@@ -40,7 +40,7 @@ const Markers = observer((props) => {
   const isFulfill = (request) => {
     if (
       request.status === "Fulfilled" &&
-      userStore.currentUser.id !== request.user_id
+      userStore.currentUser.id !== request.user.id
     ) {
       return true
     }

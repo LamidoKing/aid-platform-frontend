@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
 import { useForm, useStores } from "hooks"
@@ -6,9 +7,13 @@ import Container from "@material-ui/core/Container"
 import Dialog from "Components/Dialog/Dialog"
 import GridContainer from "Components/Grid/GridContainer"
 import GridItem from "Components/Grid/GridItem"
+import Notification from "Components/Notification/Notifications"
+import Loading from "Components/Loading/Loading"
 import Form from "./Sections/NewReaquestForm"
 
 const NewRequest = observer(() => {
+  const [open, setOpen] = useState(false)
+  const [isloding, seIsloding] = useState(false)
   const { appstore, mapstore, requeststore } = useStores()
   const [message] = useState(
     "Navigate the map and Right Click on the Location or point where help is needed, do want to continue"
@@ -23,20 +28,19 @@ const NewRequest = observer(() => {
 
   const { values, isnoEmpathyValue, handleChange } = useForm({ initialState })
 
+  const handleCloseNotification = () => {
+    setOpen(false)
+  }
+
   const handleSummit = () => {
     if (isnoEmpathyValue) {
       const inputs = {
-        id: requeststore.requests.length + 1,
         ...values,
         latitude: mapstore.latitude,
         longitude: mapstore.longitude,
         status: "Unfulfill",
       }
       requeststore.addRequest(inputs)
-      mapstore.clearClikedLocation()
-      mapstore.setDragle(false)
-      history.push("/pages/requests")
-      appstore.showGuidePanel()
     }
   }
 
@@ -61,9 +65,35 @@ const NewRequest = observer(() => {
     appstore.showOnlyMap()
   }
 
+  useEffect(() => {
+    if (requeststore.status === "fetching") {
+      seIsloding(true)
+    }
+    if (requeststore.status === "success") {
+      seIsloding(false)
+      mapstore.clearClikedLocation()
+      mapstore.setDragle(false)
+      requeststore.setRequests()
+      requeststore.clearStatus()
+      history.push("/pages/requests")
+      appstore.showGuidePanel()
+    }
+    if (requeststore.status === "error") {
+      seIsloding(false)
+      setOpen(true)
+      requeststore.clearStatus()
+    }
+  }, [requeststore, requeststore.status, appstore, mapstore, history])
+
   return (
     <>
       <Container>
+        <Loading open={isloding} />
+        <Notification
+          open={open}
+          message={requeststore.error.message}
+          handleCloseNotification={handleCloseNotification}
+        />
         <Dialog
           message={message}
           title={title}

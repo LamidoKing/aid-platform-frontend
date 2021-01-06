@@ -30,7 +30,7 @@ const Map = observer((props) => {
   const { children, handleMapClick, handleMakerClick } = props
   const [userLocation, setUserLocation] = useState({})
   const [open, setopen] = useState(true)
-  const { mapstore } = useStores()
+  const { mapstore, requeststore } = useStores()
 
   const handleOpen = () => {
     setopen(false)
@@ -53,6 +53,9 @@ const Map = observer((props) => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(getPosition)
   }, [])
+  useEffect(() => {
+    requeststore.setRequests()
+  }, [requeststore])
 
   return (
     <>

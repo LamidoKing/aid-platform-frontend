@@ -27,7 +27,7 @@ class UserStore {
     this.fetchapi(data, "login")
   }
 
-  signUp = async (data) => {
+  signUp = (data) => {
     this.fetchapi(data, "signup")
   }
 

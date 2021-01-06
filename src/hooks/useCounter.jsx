@@ -35,20 +35,26 @@ const useCounter = () => {
   )
 
   useEffect(() => {
+    const requestCounter = async () => {
+      await requeststore.setRequests()
+      setRequest(requeststore.requests.length)
+      setMyRequests(requeststore.myRequests.length)
+      setUnFullfill(setLenght(requeststore.requests, "Unfulfill"))
+      setFullfilled(setLenght(requeststore.requests, "fullfil"))
+      setMyUnFullfill(setLenght(requeststore.myRequests, "Unfulfill"))
+      setMyFullfilled(setLenght(requeststore.myRequests, "fullfil"))
+    }
+
     let cancelRequest = false
 
     const interval = () =>
       setInterval(() => {
         if (cancelRequest) return
 
-        setRequest(requeststore.requests.length)
-        setMyRequests(requeststore.myRequests.length)
-        setUnFullfill(setLenght(requeststore.requests, "Unfulfill"))
-        setFullfilled(setLenght(requeststore.requests, "fullfil"))
-        setMyUnFullfill(setLenght(requeststore.myRequests, "Unfulfill"))
-        setMyFullfilled(setLenght(requeststore.myRequests, "fullfil"))
+        requestCounter()
       }, 60000)
 
+    requestCounter()
     interval()
 
     return () => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
@@ -27,14 +28,14 @@ const MakerDetails = observer(() => {
     mapstore.closeDetails()
   }
 
-  const handleVolunteer = (user, req) => {
+  const handleVolunteer = () => {
     requeststore.volunteerToRequest(request)
-    chatStore.volunteerToRequest(req)
+    // chatStore.volunteerToRequest(req)
 
-    appstore.handlechatWithMoreRequest(false)
+    // appstore.handlechatWithMoreRequest(false)
     handleClose()
     appstore.showMapPages()
-    history.push("/pages/chat")
+    // history.push("/pages/chat")
   }
 
   const handleClickVolunter = () => {
@@ -50,58 +51,65 @@ const MakerDetails = observer(() => {
         handleClose={handleClose}
         Component={
           <>
-            <DialogTitle id="alert-dialog-title" className={classes.title}>
-              {request.title}
-            </DialogTitle>
-            <DialogContent dividers className={classes.content}>
-              <DialogContentText
-                id="alert-dialog-description"
-                className={classes.description}
-              >
-                {request.description}
-              </DialogContentText>
-              <Typography variant="h6" className={classes.title}>
-                Type Of Request:{" "}
-                <span className={classes.white}>{request.type_of_request}</span>
-              </Typography>
-              <Typography variant="h6" className={classes.title}>
-                Status: <span className={classes.white}>{request.status}</span>
-              </Typography>
-              <Typography variant="h6" className={classes.title}>
-                Latitude:{" "}
-                <span className={classes.white}>{request.latitude}</span>
-              </Typography>
-              <Typography variant="h6" className={classes.title}>
-                Longitude:{" "}
-                <span className={classes.white}>{request.longitude}</span>
-              </Typography>
-              {userStore.currentUser.id === request.user_id && (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <DrawerList
-                    title="Volunters"
-                    titleIcon={PeopleAltIcon}
-                    itemList={request.volunters}
-                    handleItemClick={handleClickVolunter}
-                  />
-                </div>
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Back
-              </Button>
-              {userStore.currentUser.id !== request.user_id && (
-                <Button
-                  onClick={() =>
-                    handleVolunteer(userStore.currentUser, request)
-                  }
-                  color="primary"
-                  autoFocus
-                >
-                  Volunteer
-                </Button>
-              )}
-            </DialogActions>
+            {request.user && (
+              <>
+                <DialogTitle id="alert-dialog-title" className={classes.title}>
+                  {request.title}
+                </DialogTitle>
+                <DialogContent dividers className={classes.content}>
+                  <DialogContentText
+                    id="alert-dialog-description"
+                    className={classes.description}
+                  >
+                    {request.description}
+                  </DialogContentText>
+                  <Typography variant="h6" className={classes.title}>
+                    Type Of Request:{" "}
+                    <span className={classes.white}>
+                      {request.type_of_request}
+                    </span>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    Status:{" "}
+                    <span className={classes.white}>{request.status}</span>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    Latitude:{" "}
+                    <span className={classes.white}>{request.latitude}</span>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    Longitude:{" "}
+                    <span className={classes.white}>{request.longitude}</span>
+                  </Typography>
+                  {userStore.currentUser.id === request.user.id && (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <DrawerList
+                        title="Volunters"
+                        titleIcon={PeopleAltIcon}
+                        itemList={request.volunters}
+                        handleItemClick={handleClickVolunter}
+                      />
+                    </div>
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Back
+                  </Button>
+                  {userStore.currentUser.id !== request.user.id && (
+                    <Button
+                      onClick={() =>
+                        handleVolunteer(userStore.currentUser, request)
+                      }
+                      color="primary"
+                      autoFocus
+                    >
+                      Volunteer
+                    </Button>
+                  )}
+                </DialogActions>
+              </>
+            )}
           </>
         }
       />

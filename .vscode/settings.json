@@ -7,6 +7,5 @@
   },
   "prettier.semi": false,
   "editor.renameOnType": true,
-  "git.autorefresh": false,
-  "files.autoSave": "afterDelay"
+  "git.autorefresh": false
 }

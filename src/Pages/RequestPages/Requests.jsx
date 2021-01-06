@@ -1,14 +1,20 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { useStores } from "hooks"
 import Container from "@material-ui/core/Container"
 import Panel from "Components/Panel/Panel"
+import Notification from "Components/Notification/Notifications"
 import EditRequest from "./EditRequest"
 
 const Requests = observer(() => {
+  const [open, setOpen] = useState(false)
   const { appstore, requeststore, userStore } = useStores()
 
   const handleRepublish = () => {}
+
+  const handleCloseNotification = () => {
+    setOpen(false)
+  }
 
   const handleFulfilled = (request) => {
     requeststore.setAsFulfilled(request)
@@ -24,8 +30,24 @@ const Requests = observer(() => {
     requeststore.removeRequest(request)
   }
 
+  useEffect(() => {
+    if (requeststore.status === "success") {
+      requeststore.clearStatus()
+      requeststore.setRequests()
+    }
+    if (requeststore.status === "error") {
+      setOpen(true)
+      requeststore.clearStatus()
+    }
+  }, [requeststore, requeststore.status])
+
   return (
     <Container>
+      <Notification
+        open={open}
+        message={requeststore.error.message}
+        handleCloseNotification={handleCloseNotification}
+      />
       {requeststore.request.id && <EditRequest />}
       <Panel
         requests={requeststore.filtedRequests}

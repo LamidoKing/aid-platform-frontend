@@ -9,7 +9,7 @@ const instance = axios.create({
 })
 
 instance.defaults.headers.common.Authorization = AuthToken.loggedIn()
-  ? `Bearer ${AuthToken.getToken()}`
+  ? `Bearer ${AuthToken.getToken("TOKEN")}`
   : null
 
 const get = async (url) => {
