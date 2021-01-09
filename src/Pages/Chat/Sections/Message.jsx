@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import { observer } from "mobx-react-lite"
 import Typography from "@material-ui/core/Typography"
@@ -31,18 +31,23 @@ const Message = observer((props) => {
 
     return false
   }
+  const ScrollToBottom = () => {
+    const elementRef = useRef()
+    useEffect(() => elementRef.current.scrollIntoView())
+    return <div ref={elementRef} />
+  }
 
   return (
     <>
       {messages.map((message) => {
-        if (message.sender_id.id === sender.id) {
+        if (message.sender.id === sender.id) {
           return (
             <GridContainer justify="flex-start" key={message.id}>
               <GridItem xs={9} sm={8} md={8}>
-                {inlineIcon(message.sender_id.id) && (
+                {inlineIcon(message.sender.id) && (
                   <Avatar
-                    status={message.sender_id.status}
-                    name={message.sender_id.first_name}
+                    status={message.sender.status}
+                    name={message.sender.first_name}
                   />
                 )}
 
@@ -53,7 +58,7 @@ const Message = observer((props) => {
             </GridContainer>
           )
         }
-        inlineIcon(message.sender_id.id)
+        inlineIcon(message.sender.id)
         return (
           <GridContainer justify="flex-end" key={message.id}>
             <GridItem xs={9} sm={8} md={4}>
@@ -64,6 +69,7 @@ const Message = observer((props) => {
           </GridContainer>
         )
       })}
+      <ScrollToBottom />
     </>
   )
 })

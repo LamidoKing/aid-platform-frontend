@@ -1,5 +1,5 @@
-import { makeAutoObservable, autorun } from "mobx"
-import { Variables } from "utils"
+import { makeAutoObservable, autorun, runInAction } from "mobx"
+import { Fetch, Urls } from "utils"
 
 class RequestStore {
   currentUser = {}
@@ -14,13 +14,17 @@ class RequestStore {
 
   volunteer = []
 
+  status = "idle"
+
+  error = {}
+
+  requestFilter
+
   constructor(userStore) {
     makeAutoObservable(this)
-    this.requests = Variables.requests
     this.currentUser = userStore.currentUser
     autorun(() => {
-      this.myRequests = this.filterMyRequest
-      this.filtedRequests = this.filterMyRequest
+      this.setMyrequest(this.filterMyRequest)
       this.volunteer = this.volunteered
     })
   }
@@ -29,41 +33,72 @@ class RequestStore {
     this.currentUser = currentUser
   }
 
+  setMyrequest = (requests) => {
+    this.myRequests = requests
+  }
+
   get filterMyRequest() {
     const filtedRequests = this.requests.filter(
-      (request) => request.user_id === this.currentUser.id
+      (request) => request.user.id === this.currentUser.id
     )
+    runInAction(() => {
+      this.filtedRequests = filtedRequests
+    })
     return filtedRequests
   }
 
   get volunteered() {
     const request = this.requests.filter((req) => {
-      return req.volunters.find((val) => val.user_id === this.currentUser.id)
+      return req.volunters.find((val) => val.id === this.currentUser.id)
     })
     return request
   }
 
-  addRequest(request) {
-    request.user_id = this.currentUser.id
-    request.volunters = []
-    this.requests.push(request)
+  addRequest = async (request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.post(`${Urls.api}/requests`, { request })
+
+      this.resolve(response, 201)
+    } catch (error) {
+      this.reject(error)
+    }
   }
 
-  removeRequest(request) {
-    this.requests.splice(this.requests.indexOf(request), 1)
+  removeRequest = async (request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.del(`${Urls.api}/requests/${request.id}`)
+
+      this.resolve(response, 204)
+    } catch (error) {
+      this.reject(error)
+    }
   }
 
-  updateRequest(request) {
-    request.volunters = []
-    request.user_id = this.currentUser.id
-    const requestIndex = this.requests.findIndex((req) => req.id === request.id)
-
-    this.requests[requestIndex] = request
+  updateRequest = async (id, request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.patch(`${Urls.api}/requests/${id}`, {
+        request,
+      })
+      this.resolve(response, 200)
+    } catch (error) {
+      this.reject(error)
+    }
   }
 
-  setAsFulfilled(request) {
-    const requestIndex = this.requests.findIndex((req) => req.id === request.id)
-    this.requests[requestIndex] = { ...request, status: "Fulfilled" }
+  setAsFulfilled = async (request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.patch(
+        `${Urls.api}/fulfill_request/${request.id}`,
+        { request: { status: "Fulfilled" } }
+      )
+      this.resolve(response, 200)
+    } catch (error) {
+      this.reject(error)
+    }
   }
 
   filterByStatus(status) {
@@ -80,21 +115,61 @@ class RequestStore {
     this.request = {}
   }
 
-  volunteerToRequest(request) {
-    const volunterData = {
-      name: `${this.currentUser.first_name} ${this.currentUser.last_name}`,
-      user_id: this.currentUser.id,
-    }
-    request.volunters.push(volunterData)
-    const requestIndex = this.requests.findIndex((req) => req.id === request.id)
+  volunteerToRequest = async (request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.post(`${Urls.api}/volunters`, {
+        volunter: { request_id: request.id },
+      })
 
-    this.requests[requestIndex] = request
+      this.resolve(response, 201)
+    } catch (error) {
+      this.reject(error)
+    }
   }
 
   filterVolunteerByStatus(status) {
     this.filtedRequests = this.volunteer.filter(
       (request) => request.status === status
     )
+  }
+
+  setRequests = async () => {
+    try {
+      const response = await Fetch.get(`${Urls.api}/requests`)
+      if (response.status === 200) {
+        runInAction(() => {
+          this.requests = response.data
+        })
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.error = error.response ? error.response.data : error
+      })
+    }
+  }
+
+  clearStatus = () => {
+    this.status = "idle"
+  }
+
+  resolve = (response, status) => {
+    if (response.status === status) {
+      runInAction(() => {
+        this.status = "success"
+      })
+    }
+  }
+
+  reject = (error) => {
+    runInAction(() => {
+      this.status = "error"
+      this.error = error.response ? error.response.data : error
+    })
+  }
+
+  setRequestFilter = (filter) => {
+    this.requestFilter = filter
   }
 }
 

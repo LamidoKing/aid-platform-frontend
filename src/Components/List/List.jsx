@@ -35,6 +35,16 @@ const DrawerList = (props) => {
     setOpen(!open)
   }
 
+  const name = (item) => {
+    if (title === "Chats") {
+      return `${item.first_name} ${item.last_name}`
+    }
+    if (title === "Volunters") {
+      return `${item.first_name} ${item.last_name}`
+    }
+    return item.name
+  }
+
   return (
     <List
       component="nav"
@@ -54,7 +64,9 @@ const DrawerList = (props) => {
             <List
               component="div"
               disablePadding
-              key={title === "Chats" ? item.id : item.name}
+              key={
+                title === "Chats" || title === "Volunters" ? item.id : item.name
+              }
             >
               <ListItem
                 button
@@ -62,11 +74,7 @@ const DrawerList = (props) => {
                 className={classes.nested}
               >
                 <ListItemText
-                  primary={
-                    title === "Chats"
-                      ? `${item.first_name} ${item.last_name}`
-                      : item.name
-                  }
+                  primary={name(item)}
                   className={classes.listText}
                 />
                 {item.icon && (

@@ -124,7 +124,7 @@ const Panel = observer((props) => {
               <Divider />
               <AccordionActions>
                 {request.status === "Unfulfill" &&
-                  request.user_id === currentUser.id && (
+                  request.user.id === currentUser.id && (
                     <>
                       {request.volunters.length > 4 && (
                         <Fab

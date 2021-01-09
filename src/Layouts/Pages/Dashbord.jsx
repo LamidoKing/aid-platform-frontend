@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
@@ -59,6 +60,7 @@ const DrawerMain = observer((props) => {
     appstore.showMapPages()
     if (title === "My Request" || title === "Volunteer") {
       history.push("/pages/requests")
+      requeststore.setRequestFilter(name)
 
       return title === "My Request"
         ? requeststore.filterByStatus(name)
@@ -67,7 +69,7 @@ const DrawerMain = observer((props) => {
 
     if (title === "Chats") {
       setOpen({ ...open, drawer: false })
-      chatStore.setSenderRequest(item)
+      chatStore.setSenderRequest(item, requeststore.requests)
       history.push("/pages/chat")
       return ""
     }
@@ -94,6 +96,10 @@ const DrawerMain = observer((props) => {
     requeststore.setRequest(request)
     mapstore.openDetail()
   }
+
+  useEffect(() => {
+    chatStore.getMessage()
+  }, [chatStore])
 
   return (
     <div className={classes.root}>

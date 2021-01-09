@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import useStores from "./useStores"
 
 const useCounter = () => {
-  const { requeststore } = useStores()
+  const { requeststore, chatStore } = useStores()
   const [request, setRequest] = useState(requeststore.requests.length)
   const [myRequests, setMyRequests] = useState(requeststore.myRequests.length)
 
@@ -35,26 +35,37 @@ const useCounter = () => {
   )
 
   useEffect(() => {
+    const requestCounter = async () => {
+      await requeststore.setRequests()
+      if (requeststore.requestFilter) {
+        requeststore.filterByStatus(requeststore.requestFilter)
+      }
+      await chatStore.getMessage()
+      chatStore.setuserChats()
+      setRequest(requeststore.requests.length)
+      setMyRequests(requeststore.myRequests.length)
+      setUnFullfill(setLenght(requeststore.requests, "Unfulfill"))
+      setFullfilled(setLenght(requeststore.requests, "fullfil"))
+      setMyUnFullfill(setLenght(requeststore.myRequests, "Unfulfill"))
+      setMyFullfilled(setLenght(requeststore.myRequests, "fullfil"))
+    }
+
     let cancelRequest = false
 
     const interval = () =>
       setInterval(() => {
         if (cancelRequest) return
 
-        setRequest(requeststore.requests.length)
-        setMyRequests(requeststore.myRequests.length)
-        setUnFullfill(setLenght(requeststore.requests, "Unfulfill"))
-        setFullfilled(setLenght(requeststore.requests, "fullfil"))
-        setMyUnFullfill(setLenght(requeststore.myRequests, "Unfulfill"))
-        setMyFullfilled(setLenght(requeststore.myRequests, "fullfil"))
+        requestCounter()
       }, 60000)
 
+    requestCounter()
     interval()
 
     return () => {
       cancelRequest = true
     }
-  }, [requeststore])
+  }, [requeststore, chatStore])
 
   return {
     request,

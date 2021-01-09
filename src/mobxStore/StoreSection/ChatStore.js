@@ -1,9 +1,7 @@
-import { makeAutoObservable, autorun, when } from "mobx"
-import { Variables } from "utils"
+import { makeAutoObservable, autorun, when, runInAction } from "mobx"
+import { Variables, Fetch, Urls } from "utils"
 
 class ChatStore {
-  allMessage = Variables.messages
-
   messages = []
 
   chats = []
@@ -18,12 +16,15 @@ class ChatStore {
 
   chatRequest = {}
 
+  status = "idle"
+
+  error = {}
+
   constructor(userStore) {
     makeAutoObservable(this)
     this.currentUser = userStore.currentUser
-    // this.chats = this.userChats
+
     autorun(() => {
-      this.messages = this.userMessages
       when(
         // Once...
         () => this.chats.length < this.userChats.length,
@@ -36,17 +37,6 @@ class ChatStore {
     })
   }
 
-  get userMessages() {
-    const messages = this.allMessage.filter(
-      (m) =>
-        m.receiver_id.id === this.currentUser.id ||
-        m.sender_id.id === this.currentUser.id
-    )
-    // this.userChats(messages)
-
-    return messages
-  }
-
   setuserChats() {
     this.chats = this.userChats
   }
@@ -56,28 +46,33 @@ class ChatStore {
 
     this.messages.forEach((m) => {
       if (
-        chats.find((object) => object.id === m.sender_id.id) === undefined &&
-        m.receiver_id.id === this.currentUser.id
+        chats.find((object) => object.id === m.sender.id) === undefined &&
+        m.receiver.id === this.currentUser.id
       ) {
-        chats.push(m.sender_id)
+        chats.push(m.sender)
       }
     })
 
     return chats
   }
 
-  setSenderRequest(sender) {
-    const isDuplicatete = (requests, message) =>
-      requests.find((object) => object.id === message.request_id.id) ===
-      undefined
+  setSenderRequest(sender, req) {
+    const isDuplicatete = (requests, request) =>
+      requests.find((object) => object.id === request.id) === undefined
 
     const requests = []
-    this.messages.forEach((m) => {
-      if (m.sender_id.id === sender.id || m.receiver_id.id === sender.id) {
-        if (isDuplicatete(requests, m)) {
-          requests.push(m.request_id)
+    req.forEach((request) => {
+      request.volunters.forEach((volunter) => {
+        if (
+          (volunter.id === sender.id &&
+            request.user.id === this.currentUser.id) ||
+          (volunter.id === this.currentUser.id && request.user.id === sender.id)
+        ) {
+          if (isDuplicatete(requests, request)) {
+            requests.push(request)
+          }
         }
-      }
+      })
     })
     this.senderRequest = requests
     this.sender = sender
@@ -87,11 +82,11 @@ class ChatStore {
     this.clearChatMessages()
     this.messages.forEach((msg) => {
       if (
-        (msg.sender_id.id === sender.id ||
-          msg.sender_id.id === this.currentUser.id) &&
-        (msg.receiver_id.id === sender.id ||
-          msg.receiver_id.id === this.currentUser.id) &&
-        msg.request_id.id === request.id
+        (msg.sender.id === sender.id ||
+          msg.sender.id === this.currentUser.id) &&
+        (msg.receiver.id === sender.id ||
+          msg.receiver.id === this.currentUser.id) &&
+        msg.request.id === request.id
       ) {
         this.chatMessages.push(msg)
       }
@@ -120,14 +115,42 @@ class ChatStore {
     this.clearChatMessages()
   }
 
-  newMessage(msg) {
-    const id = this.allMessage.length + 1
-    const message = {
-      id,
-      ...msg,
+  newMessage = async (message) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.post(`${Urls.api}/messages`, {
+        message,
+      })
+      if (response.status === 201) {
+        runInAction(() => {
+          this.status = "success"
+        })
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.status = "error"
+        this.error = error.response ? error.response.data : error
+      })
     }
+  }
 
-    this.allMessage.push(message)
+  liveChat = (message) => {
+    this.chatMessages.push(message)
+  }
+
+  getMessage = async () => {
+    try {
+      const response = await Fetch.get(`${Urls.api}/messages`)
+      if (response.status === 200) {
+        runInAction(() => {
+          this.messages = response.data
+        })
+      }
+    } catch (error) {
+      runInAction(() => {
+        this.error = error.response ? error.response.data : error
+      })
+    }
   }
 }
 

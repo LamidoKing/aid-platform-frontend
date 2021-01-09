@@ -1,6 +1,7 @@
 import React from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import pagesRoutes from "routes/pages"
+import { PresenceChannel } from "ActionCable"
 import Dashbord from "./Dashbord"
 
 const routes = (
@@ -16,6 +17,7 @@ const routes = (
 )
 
 const Pages = () => {
+  PresenceChannel()
   return (
     <>
       <Dashbord>{routes}</Dashbord>

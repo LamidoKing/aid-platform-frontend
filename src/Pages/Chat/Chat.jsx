@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { observer } from "mobx-react-lite"
-import { useForm, useStores } from "hooks"
+import { useForm, useStores, useCable } from "hooks"
 import Dialog from "Components/Dialog/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
@@ -12,13 +12,22 @@ import Message from "./Sections/Message"
 import ChatInput from "./Sections/ChatInput"
 import RequestList from "./Sections/RequestList"
 
+const computeChatId = (array) => {
+  return array.sort((a, b) => a - b).join("")
+}
 const Chat = observer(() => {
   const classes = chatStyles()
   const history = useHistory()
   const { appstore, chatStore } = useStores()
   const { chatDialog, chatWithMoreRequest } = appstore
-  const initialState = { message: "" }
 
+  const chatId =
+    chatStore.sender.id &&
+    computeChatId([chatStore.currentUser.id, chatStore.sender.id])
+
+  const { data } = useCable("MessageChannel", chatId)
+
+  const initialState = { message: "" }
   const { values, isnoEmpathyValue, handleChange } = useForm({ initialState })
 
   const handleClose = () => {
@@ -38,13 +47,11 @@ const Chat = observer(() => {
   const handleSend = () => {
     if (isnoEmpathyValue) {
       const message = {
-        sender_id: chatStore.currentUser,
-        receiver_id: chatStore.sender,
-        request_id: chatStore.chatRequest,
+        receiver_id: chatStore.sender.id,
+        request_id: chatStore.chatRequest.id,
         message: values.message,
       }
       chatStore.newMessage(message)
-      chatStore.setChatMessage(chatStore.chatRequest, chatStore.sender)
       values.message = ""
     }
   }
@@ -66,6 +73,12 @@ const Chat = observer(() => {
     }
     return clear
   }, [appstore, chatStore, history])
+
+  useEffect(() => {
+    if (data) {
+      chatStore.liveChat(data.message)
+    }
+  }, [chatStore, data])
 
   return (
     <div>
