@@ -18,17 +18,23 @@ class RequestStore {
 
   error = {}
 
+  requestFilter
+
   constructor(userStore) {
     makeAutoObservable(this)
     this.currentUser = userStore.currentUser
     autorun(() => {
-      this.myRequests = this.filterMyRequest
+      this.setMyrequest(this.filterMyRequest)
       this.volunteer = this.volunteered
     })
   }
 
   setCurrentUser(currentUser) {
     this.currentUser = currentUser
+  }
+
+  setMyrequest = (requests) => {
+    this.myRequests = requests
   }
 
   get filterMyRequest() {
@@ -138,7 +144,7 @@ class RequestStore {
       }
     } catch (error) {
       runInAction(() => {
-        this.error = error.response.data
+        this.error = error.response ? error.response.data : error
       })
     }
   }
@@ -158,8 +164,12 @@ class RequestStore {
   reject = (error) => {
     runInAction(() => {
       this.status = "error"
-      this.error = error.response.data
+      this.error = error.response ? error.response.data : error
     })
+  }
+
+  setRequestFilter = (filter) => {
+    this.requestFilter = filter
   }
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
@@ -28,21 +27,30 @@ const MakerDetails = observer(() => {
     mapstore.closeDetails()
   }
 
-  const handleVolunteer = () => {
-    requeststore.volunteerToRequest(request)
-    // chatStore.volunteerToRequest(req)
-
-    // appstore.handlechatWithMoreRequest(false)
-    handleClose()
-    appstore.showMapPages()
-    // history.push("/pages/chat")
-  }
-
-  const handleClickVolunter = () => {
+  const redirect = () => {
     handleClose()
     appstore.showMapPages()
     history.push("/pages/chat")
   }
+
+  const handleClickVolunter = (user) => {
+    chatStore.setSenderRequest(user, [request])
+    redirect()
+  }
+  const handleClickMessage = (req) => {
+    chatStore.setSenderRequest(req.user, [req])
+    redirect()
+  }
+
+  const handleVolunteer = async () => {
+    await requeststore.volunteerToRequest(request)
+    await requeststore.setRequests()
+    const req = requeststore.requests.find((object) => object.id === request.id)
+    handleClickMessage(req)
+  }
+
+  const isVolunter = (volunters, user) =>
+    volunters.find((object) => object.id === user.id) !== undefined
 
   return (
     <>
@@ -96,17 +104,26 @@ const MakerDetails = observer(() => {
                   <Button onClick={handleClose} color="primary">
                     Back
                   </Button>
-                  {userStore.currentUser.id !== request.user.id && (
-                    <Button
-                      onClick={() =>
-                        handleVolunteer(userStore.currentUser, request)
-                      }
-                      color="primary"
-                      autoFocus
-                    >
-                      Volunteer
-                    </Button>
-                  )}
+                  {userStore.currentUser.id !== request.user.id &&
+                    (isVolunter(request.volunters, userStore.currentUser) ? (
+                      <Button
+                        onClick={() => handleClickMessage(request)}
+                        color="primary"
+                        autoFocus
+                      >
+                        Message
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          handleVolunteer(userStore.currentUser, request)
+                        }
+                        color="primary"
+                        autoFocus
+                      >
+                        Volunteer
+                      </Button>
+                    ))}
                 </DialogActions>
               </>
             )}

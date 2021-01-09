@@ -41,13 +41,13 @@ const RequestList = (props) => {
   }
 
   const volunterByme = (lists) =>
-    lists.find((request) => request.user_id === sender.id)
+    lists.find((request) => request.user.id === sender.id)
 
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="chat request list by user">
         {requests.map((request) => {
-          if (request.user_id !== sender.id) {
+          if (request.user.id !== sender.id) {
             return listItem(request)
           }
           return ""
@@ -65,7 +65,7 @@ const RequestList = (props) => {
 
       <List component="nav" aria-label="chat request list by me">
         {requests.map((request) => {
-          if (request.user_id === sender.id) {
+          if (request.user.id === sender.id) {
             return listItem(request)
           }
           return ""

@@ -15,7 +15,7 @@ const userStore = new UserStore()
 
 const requeststore = new RequestStore(userStore)
 
-const chatStore = new ChatStore(userStore)
+const chatStore = new ChatStore(userStore, requeststore)
 
 const stores = Object.freeze({
   appstore,
