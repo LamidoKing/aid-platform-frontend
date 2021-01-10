@@ -29,7 +29,7 @@ const counterPanelStyles = makeStyles((theme) => ({
   },
   button: {
     margin: "0px 15px 10px 15px",
-    color: "black",
+    color: theme.palette.secondary.main,
   },
   hideIcon: {
     color: "white",

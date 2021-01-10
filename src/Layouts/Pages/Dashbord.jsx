@@ -19,7 +19,7 @@ import MobileAppBar from "Components/MobileAppBar/MobileAppBar"
 import MobileDrawer from "Components/MobileDrawer/MobileDrawer"
 import Drawer from "Components/Drawer/Drawer"
 // Variable
-import { useStores } from "hooks"
+import { useStores, useCounter } from "hooks"
 // Styles
 import dashbordStyles from "styles/pages/dashbordStyles"
 import DrawerList from "./Sections/DrawerList"
@@ -30,6 +30,7 @@ const propTypes = {
 
 const DrawerMain = observer((props) => {
   const { appstore, mapstore, requeststore, userStore, chatStore } = useStores()
+  const { request } = useCounter()
   const history = useHistory()
   const classes = dashbordStyles()
   const { children } = props
@@ -84,16 +85,16 @@ const DrawerMain = observer((props) => {
       mapstore.dragable
     ) {
       const location = {
-        latitude: e.latLng.lat(),
-        longitude: e.latLng.lng(),
+        latitude: e.latlng.lat,
+        longitude: e.latlng.lng,
       }
       mapstore.setClickeLocation(location)
       appstore.showMapPages()
     }
   }
 
-  const handleMakerClick = (request) => {
-    requeststore.setRequest(request)
+  const handleMakerClick = (req) => {
+    requeststore.setRequest(req)
     mapstore.openDetail()
   }
 
@@ -107,7 +108,7 @@ const DrawerMain = observer((props) => {
         {!appstore.mapOnly && (
           <MobileAppBar
             toggleDrawer={toggleDrawer}
-            title="2500 Unfulfilled Help Request"
+            title={`${request} Unfulfilled Help Request`}
           />
         )}
       </Hidden>
