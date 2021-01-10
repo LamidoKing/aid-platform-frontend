@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import {
@@ -7,7 +6,6 @@ import {
   useMapEvents,
   useMapEvent,
   useMap,
-  Marker,
 } from "react-leaflet"
 import { observer } from "mobx-react-lite"
 import { useStores } from "hooks"
