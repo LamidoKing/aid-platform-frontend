@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React from "react"
 import PropTypes from "prop-types"
-import { Marker } from "@react-google-maps/api"
+import { Marker } from "react-leaflet"
+import { icon } from "leaflet"
 import { observer } from "mobx-react-lite"
 import { useStores } from "hooks"
 import marker1 from "asserts/oneTime2.png"
@@ -21,11 +23,21 @@ const Markers = observer((props) => {
   const { requeststore, userStore } = useStores()
   const { requests } = requeststore
 
+  const computeIcon = (image) =>
+    icon({
+      iconRetinaUrl: image,
+      iconUrl: image,
+    })
+
   const makerIcon = (request) => {
     if (userStore.currentUser.id === request.user.id) {
-      return request.type_of_request === "Material Need" ? marker3 : marker4
+      return request.type_of_request === "Material Need"
+        ? computeIcon(marker3)
+        : computeIcon(marker4)
     }
-    return request.type_of_request === "Material Need" ? marker1 : marker2
+    return request.type_of_request === "Material Need"
+      ? computeIcon(marker1)
+      : computeIcon(marker2)
   }
 
   const hasMaxVolunters = (request) => {
@@ -55,12 +67,13 @@ const Markers = observer((props) => {
           <Marker
             key={request.id}
             title={request.type_of_request}
+            position={[request.latitude, request.longitude]}
             icon={makerIcon(request)}
-            position={{
-              lat: request.latitude,
-              lng: request.longitude,
+            eventHandlers={{
+              click: () => {
+                handleMakerClick(request)
+              },
             }}
-            onClick={() => handleMakerClick(request)}
           />
         )
       })}

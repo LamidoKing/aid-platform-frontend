@@ -1,12 +1,20 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { GoogleMap, LoadScript } from "@react-google-maps/api"
+import {
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  useMapEvent,
+  useMap,
+  Marker,
+} from "react-leaflet"
 import { observer } from "mobx-react-lite"
 import { useStores } from "hooks"
-import { Variables } from "utils"
-import Loading from "Components/Loading/Loading"
-import Markers from "./Markers"
+import { AuthToken } from "utils"
+import mapStyles from "styles/components/mapStyles"
 import MakerDetails from "./MakerDetails"
+import Markers from "./Markers"
 import DragableMaker from "./DragableMaker"
 
 const propTypes = {
@@ -20,29 +28,35 @@ const defaultProps = {
   handleMakerClick: () => {},
 }
 
-const containerStyle = {
-  width: "100%",
-  height: "100vh",
-  zIndex: 111,
-}
-
-const Map = observer((props) => {
+const Map2 = observer((props) => {
+  const classes = mapStyles()
   const { children, handleMapClick, handleMakerClick } = props
-  const [userLocation, setUserLocation] = useState({})
-  const [open, setopen] = useState(true)
+  const [userLocation, setUserLocation] = useState({ lat: 51.505, lng: -0.09 })
   const { mapstore, requeststore } = useStores()
 
-  const handleOpen = () => {
-    setopen(false)
+  const RightClick = () => {
+    useMapEvent("contextmenu", (e) => {
+      handleMapClick(e)
+    })
+    return null
   }
 
-  const getPosition = (position) => {
-    const currentPosition = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    }
-    setUserLocation(currentPosition)
+  const ZoomToLocation = () => {
+    const map = useMap()
+
+    map.locate()
+
+    useMapEvents({
+      locationfound(e) {
+        map.setZoom(4)
+        setUserLocation(e.latlng)
+        map.flyTo(e.latlng, map.getZoom())
+      },
+    })
+
+    return null
   }
+
   const placeDragableMaker = () => {
     if (mapstore.dragable === true) {
       return true
@@ -51,38 +65,31 @@ const Map = observer((props) => {
   }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(getPosition)
-  }, [])
-  useEffect(() => {
     requeststore.setRequests()
   }, [requeststore])
-
   return (
-    <>
-      <LoadScript
-        googleMapsApiKey={`${process.env.REACT_APP_MAP_KEY}`}
-        onLoad={handleOpen}
-        loadingElement={<Loading open={open} />}
-      >
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={userLocation}
-          zoom={10}
-          options={Variables.mapOptions}
-          onRightClick={handleMapClick}
-        >
-          <Markers handleMakerClick={handleMakerClick} />
-          <MakerDetails />
-          {placeDragableMaker() && <DragableMaker />}
+    <MapContainer
+      center={userLocation}
+      zoom={2}
+      scrollWheelZoom={false}
+      className={classes.map}
+    >
+      <TileLayer
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {AuthToken.getToken("USER") && <ZoomToLocation />}
+      <RightClick />
+      <Markers handleMakerClick={handleMakerClick} />
 
-          <>{children}</>
-        </GoogleMap>
-      </LoadScript>
-    </>
+      <MakerDetails />
+
+      {placeDragableMaker() && <DragableMaker />}
+      <div className={classes.children}>{children}</div>
+    </MapContainer>
   )
 })
 
-Map.propTypes = propTypes
-Map.defaultProps = defaultProps
-
-export default Map
+Map2.propTypes = propTypes
+Map2.defaultProps = defaultProps
+export default Map2

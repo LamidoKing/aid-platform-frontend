@@ -1,34 +1,43 @@
-import React from "react"
-import { Marker } from "@react-google-maps/api"
+import React, { useRef } from "react"
+import { Marker, Popup } from "react-leaflet"
 import { observer } from "mobx-react-lite"
 import { useStores } from "hooks"
 
-const DragableMaker = observer(() => {
+const DragableMaker2 = observer(() => {
   const { mapstore, appstore } = useStores()
 
-  const handleDragEnd = (e) => {
-    const location = {
-      latitude: e.latLng.lat(),
-      longitude: e.latLng.lng(),
+  const markerRef = useRef(null)
+
+  const handleDragEnd = () => {
+    const marker = markerRef.current
+
+    if (marker != null) {
+      const { lat, lng } = marker.getLatLng()
+
+      const location = {
+        latitude: lat,
+        longitude: lng,
+      }
+      mapstore.setClickeLocation(location)
+      appstore.showMapPages()
+      mapstore.setDragle(false)
     }
-    mapstore.setClickeLocation(location)
-    appstore.showMapPages()
-    mapstore.setDragle(false)
   }
 
   return (
-    <>
-      <Marker
-        draggable
-        title="New Request"
-        position={{
-          lat: mapstore.latitude,
-          lng: mapstore.longitude,
-        }}
-        onDragEnd={handleDragEnd}
-      />
-    </>
+    <Marker
+      draggable
+      ref={markerRef}
+      eventHandlers={{
+        dragend: handleDragEnd,
+      }}
+      position={[mapstore.latitude, mapstore.longitude]}
+    >
+      <Popup minWidth={90}>
+        <span>New Request</span>
+      </Popup>
+    </Marker>
   )
 })
 
-export default DragableMaker
+export default DragableMaker2

@@ -15,6 +15,9 @@ const homeStyles = makeStyles((theme) => ({
     },
     overflow: "auto",
     height: "80vh",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   },
 }))
 

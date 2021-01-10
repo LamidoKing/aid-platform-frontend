@@ -46,6 +46,9 @@ const dashbordStyles = makeStyles((theme) => ({
     },
     overflow: "auto",
     height: "80vh",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   },
   fabMap: {
     position: "absolute",
