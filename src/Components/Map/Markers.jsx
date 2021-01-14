@@ -42,6 +42,7 @@ const Markers = observer((props) => {
   const hasMaxVolunters = (request) => {
     if (
       request.volunters.length > 4 &&
+      request.republished === "false" &&
       userStore.currentUser.id !== request.user.id
     ) {
       return true

@@ -23,7 +23,6 @@ const drawerStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       padding: theme.spacing(0, 6),
     },
-    backgroundColor: theme.palette.primary.main,
   },
 }))
 

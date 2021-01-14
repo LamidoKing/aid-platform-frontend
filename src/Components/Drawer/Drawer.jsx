@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite"
 // @material-ui Components
 import Drawer from "@material-ui/core/Drawer"
 import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
 // @material-ui Icon
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 // Styles
@@ -24,7 +23,7 @@ const propTypes = {
 
 const Sidebar = observer((props) => {
   const classes = drawerStyles()
-  const { open, title, children, toggleDrawer } = props
+  const { open, children, toggleDrawer } = props
   return (
     <>
       <Drawer
@@ -37,16 +36,8 @@ const Sidebar = observer((props) => {
         }}
       >
         <div className={classes.drawerHeader}>
-          <Typography
-            variant="subtitle1"
-            noWrap
-            color="secondary"
-            style={{ paddingRight: "16px" }}
-          >
-            {title}
-          </Typography>
           <IconButton onClick={toggleDrawer("drawer", false)} color="secondary">
-            <ChevronLeftIcon color="secondary" fontSize="large" />
+            <ChevronLeftIcon color="primary" fontSize="large" />
           </IconButton>
         </div>
         {children}

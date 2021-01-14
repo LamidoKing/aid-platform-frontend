@@ -40,7 +40,7 @@ const DrawerList = (props) => {
       return `${item.first_name} ${item.last_name}`
     }
     if (title === "Volunters") {
-      return `${item.first_name} ${item.last_name}`
+      return `${item.user.first_name} ${item.user.last_name}`
     }
     return item.name
   }
@@ -108,7 +108,7 @@ const DrawerList = (props) => {
                       ) : (
                         <OnlineIcon
                           className={clsx(
-                            item.status === "offline" && classes.offlineColor
+                            item.status === "online" && classes.onlineIcon
                           )}
                         />
                       )}

@@ -41,6 +41,21 @@ const Panel = observer((props) => {
     setExpanded(isExpanded ? panel : false)
   }
 
+  const republishable = (request) => {
+    const currentDate = new Date()
+    const req = request.volunters.find(
+      (v) => (currentDate - new Date(v.created_at)) / 3.6e6 > 24
+    )
+    if (
+      req !== undefined &&
+      request.volunters.length > 4 &&
+      request.republished === "false"
+    ) {
+      return true
+    }
+    return false
+  }
+
   return (
     <div className={classes.root}>
       {requests.length === 0 ? (
@@ -69,7 +84,7 @@ const Panel = observer((props) => {
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon color="primary" />}
                 aria-controls="panel1c-content"
-                id="panel1c-header"
+                id={request.id}
               >
                 <div className={classes.column}>
                   <Typography className={classes.heading} color="primary">
@@ -126,7 +141,7 @@ const Panel = observer((props) => {
                 {request.status === "Unfulfill" &&
                   request.user.id === currentUser.id && (
                     <>
-                      {request.volunters.length > 4 && (
+                      {republishable(request) && (
                         <Fab
                           arial="republish"
                           Icon={PublishIcon}

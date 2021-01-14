@@ -7,22 +7,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Typography from "@material-ui/core/Typography"
 import TimelineIcon from "@material-ui/icons/Timeline"
 import UpdateIcon from "@material-ui/icons/Update"
-import { makeStyles } from "@material-ui/core/styles"
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-    background: theme.palette.secondary.main,
-    margin: "10px 0px",
-  },
-  cardHeader: {
-    textAlign: "end",
-    color: theme.palette.primary.main,
-  },
-  white: {
-    color: "white",
-  },
-}))
+import statCardStyles from "styles/components/statCardStyles"
 
 const propTypes = {
   title: PropTypes.string,
@@ -33,8 +18,8 @@ const defaultProps = {
   total: 0,
 }
 
-const ChartCard = (props) => {
-  const classes = useStyles()
+const StatCard = (props) => {
+  const classes = statCardStyles()
   const { title, total } = props
 
   return (
@@ -65,7 +50,7 @@ const ChartCard = (props) => {
   )
 }
 
-ChartCard.propTypes = propTypes
-ChartCard.defaultProps = defaultProps
+StatCard.propTypes = propTypes
+StatCard.defaultProps = defaultProps
 
-export default ChartCard
+export default StatCard

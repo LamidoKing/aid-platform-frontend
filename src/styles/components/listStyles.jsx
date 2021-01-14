@@ -1,3 +1,4 @@
+import { green, red } from "@material-ui/core/colors"
 import { makeStyles } from "@material-ui/core/styles"
 
 const listStyles = makeStyles((theme) => ({
@@ -12,7 +13,10 @@ const listStyles = makeStyles((theme) => ({
     color: "white",
   },
   offlineColor: {
-    color: "grey",
+    color: red[500],
+  },
+  onlineIcon: {
+    color: green[500],
   },
   nested: {
     paddingLeft: theme.spacing(4),

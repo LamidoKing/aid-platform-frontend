@@ -46,8 +46,10 @@ const Map2 = observer((props) => {
 
     useMapEvents({
       locationfound(e) {
-        map.setZoom(4)
         setUserLocation(e.latlng)
+        if (e.latlng.lat !== userLocation.lat) {
+          map.setZoom(4)
+        }
         map.flyTo(e.latlng, map.getZoom())
       },
     })

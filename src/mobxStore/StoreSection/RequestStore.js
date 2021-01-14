@@ -34,7 +34,9 @@ class RequestStore {
   }
 
   setMyrequest = (requests) => {
-    this.myRequests = requests
+    runInAction(() => {
+      this.myRequests = requests
+    })
   }
 
   get filterMyRequest() {
@@ -49,7 +51,7 @@ class RequestStore {
 
   get volunteered() {
     const request = this.requests.filter((req) => {
-      return req.volunters.find((val) => val.id === this.currentUser.id)
+      return req.volunters.find((val) => val.user.id === this.currentUser.id)
     })
     return request
   }
@@ -123,6 +125,19 @@ class RequestStore {
       })
 
       this.resolve(response, 201)
+    } catch (error) {
+      this.reject(error)
+    }
+  }
+
+  republishRequest = async (request) => {
+    this.status = "fetching"
+    try {
+      const response = await Fetch.patch(
+        `${Urls.api}/requests/republish/${request.id}`,
+        { request: { republished: "true" } }
+      )
+      this.resolve(response, 200)
     } catch (error) {
       this.reject(error)
     }

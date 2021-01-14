@@ -54,7 +54,7 @@ class UserStore {
     } catch (error) {
       runInAction(() => {
         this.status = "error"
-        this.error = error.response.data
+        this.error = error.response ? error.response.data : error
       })
     }
   }
