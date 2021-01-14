@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { observer } from "mobx-react-lite"
 import Badge from "@material-ui/core/Badge"
 import Avatar from "@material-ui/core/Avatar"
 import { withStyles } from "@material-ui/core/styles"
@@ -15,11 +16,11 @@ const propTypes = {
   name: PropTypes.string,
 }
 
-const StyledBadge = withStyles((theme) => ({
+const StyledBadge = withStyles(() => ({
   badge: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.main,
-    boxShadow: `0 0 0 2px ${theme.palette.secondary.main}`,
+    backgroundColor: "green",
+    color: "green",
+    boxShadow: "0 0 0 2px green",
     "&::after": {
       position: "absolute",
       top: 0,
@@ -44,11 +45,11 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge)
 
-const AvatarComponent = (props) => {
+const AvatarComponent = observer((props) => {
   const classes = avatarStyles()
   const { status, name } = props
 
-  const title = name.split("")[0]
+  const title = name.split("")[0].toUpperCase()
 
   return (
     <div className={classes.root}>
@@ -67,7 +68,7 @@ const AvatarComponent = (props) => {
         </StyledBadge>
       ) : (
         <Badge
-          color="secondary"
+          color="error"
           overlap="circle"
           badgeContent=" "
           anchorOrigin={{
@@ -83,7 +84,7 @@ const AvatarComponent = (props) => {
       )}
     </div>
   )
-}
+})
 
 AvatarComponent.defaultProps = defaultProps
 AvatarComponent.propTypes = propTypes

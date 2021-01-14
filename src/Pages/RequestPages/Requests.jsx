@@ -10,7 +10,9 @@ const Requests = observer(() => {
   const [open, setOpen] = useState(false)
   const { appstore, requeststore, userStore } = useStores()
 
-  const handleRepublish = () => {}
+  const handleRepublish = (request) => {
+    requeststore.republishRequest(request)
+  }
 
   const handleCloseNotification = () => {
     setOpen(false)

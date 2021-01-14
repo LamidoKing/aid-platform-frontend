@@ -64,9 +64,10 @@ class ChatStore {
     req.forEach((request) => {
       request.volunters.forEach((volunter) => {
         if (
-          (volunter.id === sender.id &&
+          (volunter.user.id === sender.id &&
             request.user.id === this.currentUser.id) ||
-          (volunter.id === this.currentUser.id && request.user.id === sender.id)
+          (volunter.user.id === this.currentUser.id &&
+            request.user.id === sender.id)
         ) {
           if (isDuplicatete(requests, request)) {
             requests.push(request)
@@ -135,7 +136,9 @@ class ChatStore {
   }
 
   liveChat = (message) => {
-    this.chatMessages.push(message)
+    if (this.chatRequest.id === message.request.id) {
+      this.chatMessages.push(message)
+    }
   }
 
   getMessage = async () => {

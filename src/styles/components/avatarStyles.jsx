@@ -11,6 +11,9 @@ const avatarStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.main,
   },
+  offline: {
+    color: "red",
+  },
 }))
 
 export default avatarStyles

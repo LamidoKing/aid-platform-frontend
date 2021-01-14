@@ -50,7 +50,7 @@ const MakerDetails = observer(() => {
   }
 
   const isVolunter = (volunters, user) =>
-    volunters.find((object) => object.id === user.id) !== undefined
+    volunters.find((object) => object.user.id === user.id) !== undefined
 
   return (
     <>

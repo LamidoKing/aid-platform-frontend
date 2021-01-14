@@ -2,16 +2,10 @@ import React from "react"
 import PropTypes from "prop-types"
 import GridContainer from "Components/Grid/GridContainer"
 import GridItem from "Components/Grid/GridItem"
-import ChartCard from "Components/ChartCard/ChartCard"
+import StatCard from "Components/StatCard/StatCard"
 import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
+import statsCardSection from "styles/pages/statsCardSection"
 
-const useStyles = makeStyles(() => ({
-  title: {
-    textAlign: "center",
-    margin: "20px 0px",
-  },
-}))
 const propTypes = {
   data: PropTypes.oneOfType([PropTypes.array]),
   title: PropTypes.string,
@@ -21,8 +15,8 @@ const defaultProps = {
   title: "",
 }
 
-const ChartCardSection = (props) => {
-  const classes = useStyles()
+const StatsCardSection = (props) => {
+  const classes = statsCardSection()
   const { data, title } = props
   return (
     <>
@@ -33,7 +27,7 @@ const ChartCardSection = (props) => {
         {data.map((item) => {
           return (
             <GridItem xs={12} sm={6} md={4} key={item.title}>
-              <ChartCard title={item.title} total={item.total} />
+              <StatCard title={item.title} total={item.total} />
             </GridItem>
           )
         })}
@@ -42,7 +36,7 @@ const ChartCardSection = (props) => {
   )
 }
 
-ChartCardSection.propTypes = propTypes
-ChartCardSection.defaultProps = defaultProps
+StatsCardSection.propTypes = propTypes
+StatsCardSection.defaultProps = defaultProps
 
-export default ChartCardSection
+export default StatsCardSection

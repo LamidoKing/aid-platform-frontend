@@ -34,6 +34,7 @@ const loggedIn = () => {
 
 const logout = () => {
   localStorage.removeItem("TOKEN")
+  localStorage.removeItem("USER")
 }
 
 export { loggedIn, setToken, getToken, logout }

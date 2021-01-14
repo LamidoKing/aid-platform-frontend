@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
+import clsx from "clsx"
 import { observer } from "mobx-react-lite"
 import { useHistory } from "react-router-dom"
-import clsx from "clsx"
+import { AuthToken } from "utils"
 // @material-ui Components
 import Collapse from "@material-ui/core/Collapse"
 import Hidden from "@material-ui/core/Hidden"
@@ -74,6 +75,10 @@ const DrawerMain = observer((props) => {
       history.push("/pages/chat")
       return ""
     }
+    if (name === "Logout") {
+      AuthToken.logout()
+      history.push("/")
+    }
 
     return ""
   }
@@ -113,11 +118,7 @@ const DrawerMain = observer((props) => {
         )}
       </Hidden>
 
-      <Drawer
-        title={`${userStore.currentUser.first_name} ${userStore.currentUser.last_name}`}
-        open={open.drawer}
-        toggleDrawer={toggleDrawer}
-      >
+      <Drawer open={open.drawer} toggleDrawer={toggleDrawer}>
         <DrawerList
           type="drawer"
           handleItemClick={handleItemClick}
