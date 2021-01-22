@@ -39,9 +39,7 @@ class UserStore {
 
     this.status = "fetching"
     try {
-      const response = await Fetch.post(url, {
-        user: data,
-      })
+      const response = await Fetch.post(url, data)
       if (response.status === status) {
         runInAction(() => {
           this.status = "success"
@@ -57,6 +55,10 @@ class UserStore {
         this.error = error.response ? error.response.data : error
       })
     }
+  }
+
+  clearStatus = () => {
+    this.status = "idle"
   }
 }
 
