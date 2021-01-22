@@ -1,5 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4016ee0d-4d8b-4d86-9e9f-34129c963596/deploy-status)](https://app.netlify.com/sites/aid-platform/deploys)
 
+[![CircleCI](https://circleci.com/gh/LamidoKing/aid-platform-frontend.svg?style=svg)](https://app.circleci.com/pipelines/github/LamidoKing/aid-platform-frontend)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
