@@ -2,8 +2,8 @@
 
 const api = "https://aid-platform-api.herokuapp.com/api/v1"
 
-const cableUrl = "ws://localhost:3000/cable"
+// const cableUrl = "ws://localhost:3000/cable"
 
-// const cableUrl = "wss://aid-platform-api.herokuapp.com/cable"
+const cableUrl = "wss://aid-platform-api.herokuapp.com/cable"
 
 export { api, cableUrl }

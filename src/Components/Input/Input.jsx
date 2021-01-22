@@ -4,6 +4,7 @@ import { withStyles, TextField } from "@material-ui/core"
 
 const defaultProps = {
   label: "",
+  labelColor: "white",
   id: "",
   value: "",
   type: "string",
@@ -20,6 +21,7 @@ const defaultProps = {
 
 const propTypes = {
   label: PropTypes.string,
+  labelColor: PropTypes.string,
   id: PropTypes.string,
   value: PropTypes.oneOfType([string, number]),
   error: PropTypes.bool,
@@ -53,6 +55,7 @@ const CssTextField = withStyles({
 const Input = (props) => {
   const {
     label,
+    labelColor,
     id,
     value,
     error,
@@ -89,7 +92,7 @@ const Input = (props) => {
           endAdornment: adornment,
         }}
         InputLabelProps={{
-          style: { color: "white" },
+          style: { color: labelColor },
         }}
       >
         {children}

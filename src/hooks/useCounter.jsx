@@ -35,6 +35,8 @@ const useCounter = () => {
   )
 
   useEffect(() => {
+    let cancelRequest = false
+
     const requestCounter = async () => {
       await requeststore.setRequests()
       if (requeststore.requestFilter) {
@@ -49,8 +51,6 @@ const useCounter = () => {
       setMyUnFullfill(setLenght(requeststore.myRequests, "Unfulfill"))
       setMyFullfilled(setLenght(requeststore.myRequests, "fullfil"))
     }
-
-    let cancelRequest = false
 
     const interval = () =>
       setInterval(() => {

@@ -34,6 +34,9 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "env": {
+    "jest": true
+  },
   "globals": {
     "window": true,
     "document": true,

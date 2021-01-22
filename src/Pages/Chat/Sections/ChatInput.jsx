@@ -22,6 +22,7 @@ const ChatInput = (props) => {
     <>
       <Input
         id="message"
+        label="Aa"
         value={values.message}
         handleChange={handleChange("message")}
         adornment={
@@ -33,6 +34,7 @@ const ChatInput = (props) => {
             <SendIcon color="primary" />
           </IconButton>
         }
+        labelColor="grey"
       />
     </>
   )

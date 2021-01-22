@@ -38,16 +38,16 @@ const SignUp = observer(() => {
     if (isOkToSummit()) {
       const formdata = new FormData()
 
-      formdata.append("user[government_id]", file)
+      formdata.append("user[govnt_id]", file)
 
+      values.status = "online"
       const valuesKeys = Object.keys(values)
 
       valuesKeys.map((key) => {
         return formdata.append(`user[${key}]`, values[key])
       })
 
-      values.status = "online"
-      userStore.signUp(values)
+      userStore.signUp(formdata)
       history.push("/pages")
     }
   }
@@ -71,8 +71,9 @@ const SignUp = observer(() => {
     if (userStore.status === "error") {
       seIsloding(false)
       setOpen(true)
+      userStore.clearStatus()
     }
-  }, [history, userStore.status])
+  }, [history, userStore, userStore.status])
 
   return (
     <>

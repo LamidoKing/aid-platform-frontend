@@ -22,7 +22,7 @@ const LogIn = observer(() => {
 
   const handleLogin = () => {
     if (isnoEmpathyValue) {
-      userStore.logIn(values)
+      userStore.logIn({ user: { ...values } })
     }
   }
 
