@@ -1,7 +1,9 @@
 import axios from "axios"
 import * as AuthToken from "./token"
+import { baseURL } from "./urls"
 
 const instance = axios.create({
+  baseURL,
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",

@@ -1,5 +1,5 @@
 import { makeAutoObservable, autorun, runInAction } from "mobx"
-import { Fetch, Urls } from "utils"
+import { Fetch } from "utils"
 
 class RequestStore {
   currentUser = {}
@@ -59,7 +59,7 @@ class RequestStore {
   addRequest = async (request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.post(`${Urls.api}/requests`, { request })
+      const response = await Fetch.post(`/requests`, { request })
 
       this.resolve(response, 201)
     } catch (error) {
@@ -70,7 +70,7 @@ class RequestStore {
   removeRequest = async (request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.del(`${Urls.api}/requests/${request.id}`)
+      const response = await Fetch.del(`/requests/${request.id}`)
 
       this.resolve(response, 204)
     } catch (error) {
@@ -81,7 +81,7 @@ class RequestStore {
   updateRequest = async (id, request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.patch(`${Urls.api}/requests/${id}`, {
+      const response = await Fetch.patch(`/requests/${id}`, {
         request,
       })
       this.resolve(response, 200)
@@ -93,10 +93,9 @@ class RequestStore {
   setAsFulfilled = async (request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.patch(
-        `${Urls.api}/fulfill_request/${request.id}`,
-        { request: { status: "Fulfilled" } }
-      )
+      const response = await Fetch.patch(`/fulfill_request/${request.id}`, {
+        request: { status: "Fulfilled" },
+      })
       this.resolve(response, 200)
     } catch (error) {
       this.reject(error)
@@ -120,7 +119,7 @@ class RequestStore {
   volunteerToRequest = async (request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.post(`${Urls.api}/volunters`, {
+      const response = await Fetch.post(`/volunters`, {
         volunter: { request_id: request.id },
       })
 
@@ -133,10 +132,9 @@ class RequestStore {
   republishRequest = async (request) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.patch(
-        `${Urls.api}/requests/republish/${request.id}`,
-        { request: { republished: "true" } }
-      )
+      const response = await Fetch.patch(`/requests/republish/${request.id}`, {
+        request: { republished: "true" },
+      })
       this.resolve(response, 200)
     } catch (error) {
       this.reject(error)
@@ -151,7 +149,7 @@ class RequestStore {
 
   setRequests = async () => {
     try {
-      const response = await Fetch.get(`${Urls.api}/requests`)
+      const response = await Fetch.get(`/requests`)
       if (response.status === 200) {
         runInAction(() => {
           this.requests = response.data

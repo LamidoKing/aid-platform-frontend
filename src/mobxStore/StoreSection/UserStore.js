@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx"
-import { AuthToken, Variables, Fetch, Urls } from "utils"
+import { AuthToken, Variables, Fetch } from "utils"
 
 class UserStore {
   users = Variables.users
@@ -32,8 +32,7 @@ class UserStore {
   }
 
   fetchapi = async (data, type) => {
-    const url =
-      type === "login" ? `${Urls.api}/auth/login` : `${Urls.api}/auth/signup`
+    const url = type === "login" ? `/auth/login` : `/auth/signup`
 
     const status = type === "login" ? 200 : 201
 

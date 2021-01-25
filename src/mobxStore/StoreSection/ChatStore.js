@@ -1,5 +1,5 @@
 import { makeAutoObservable, autorun, when, runInAction } from "mobx"
-import { Variables, Fetch, Urls } from "utils"
+import { Variables, Fetch } from "utils"
 
 class ChatStore {
   messages = []
@@ -119,7 +119,7 @@ class ChatStore {
   newMessage = async (message) => {
     this.status = "fetching"
     try {
-      const response = await Fetch.post(`${Urls.api}/messages`, {
+      const response = await Fetch.post(`/messages`, {
         message,
       })
       if (response.status === 201) {
@@ -143,7 +143,7 @@ class ChatStore {
 
   getMessage = async () => {
     try {
-      const response = await Fetch.get(`${Urls.api}/messages`)
+      const response = await Fetch.get(`/messages`)
       if (response.status === 200) {
         runInAction(() => {
           this.messages = response.data
