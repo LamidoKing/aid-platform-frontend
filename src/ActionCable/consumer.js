@@ -7,4 +7,4 @@ import { AuthToken, Urls } from "utils"
 
 const id = AuthToken.getToken("USER") && AuthToken.getToken("USER").id
 
-export default createConsumer(`${Urls.cableUrl}?user=${id}`)
+export default createConsumer(`${Urls.cableURL}?user=${id}`)

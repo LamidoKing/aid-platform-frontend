@@ -1,9 +1,11 @@
-// const api = "http://localhost:3000/api/v1"
+const baseURL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000/api/v1"
+    : "https://aid-platform-api.herokuapp.com/api/v1"
 
-const api = "https://aid-platform-api.herokuapp.com/api/v1"
+const cableURL =
+  window.location.hostname === "localhost"
+    ? "ws://localhost:3000/cable"
+    : "wss://aid-platform-api.herokuapp.com/cable"
 
-// const cableUrl = "ws://localhost:3000/cable"
-
-const cableUrl = "wss://aid-platform-api.herokuapp.com/cable"
-
-export { api, cableUrl }
+export { baseURL, cableURL }
