@@ -10,9 +10,9 @@ describe("Render <CounterPanel />", () => {
     expect(screen.getByText(/0/i)).toBeInTheDocument()
   })
 
-  test("Should show Unfulf1lled Help Request title", () => {
+  test("Should show Unfulfilled Help Request title", () => {
     render(<CounterPanel />)
-    expect(screen.getByText(/Unfulf1lled Help Request/i)).toBeInTheDocument()
+    expect(screen.getByText(/Unfulfilled Help Request/i)).toBeInTheDocument()
   })
 
   test("Should show Link to login and event click", () => {
