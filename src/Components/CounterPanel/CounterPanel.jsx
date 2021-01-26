@@ -27,7 +27,7 @@ const defaultProps = {
 }
 const CounterPanel = (props) => {
   const classes = counterPanelStyles()
-  const { request } = useCounter()
+  const { UnfulfillLength } = useCounter()
   const { auth, handleHideCounter } = props
 
   return (
@@ -41,14 +41,14 @@ const CounterPanel = (props) => {
                 variant="h4"
                 color="primary"
               >
-                {request}
+                {UnfulfillLength}
               </Typography>
               <Typography
                 className={classes.center}
                 variant="h5"
                 color="primary"
               >
-                Unfulf1lled Help Request
+                Unfulfilled Help Request
               </Typography>
               {!auth && (
                 <>
