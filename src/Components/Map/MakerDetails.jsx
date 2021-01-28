@@ -34,7 +34,7 @@ const MakerDetails = observer(() => {
   }
 
   const handleClickVolunter = (user) => {
-    chatStore.setSenderRequest(user, [request])
+    chatStore.setSenderRequest(user.user, [request])
     redirect()
   }
   const handleClickMessage = (req) => {
